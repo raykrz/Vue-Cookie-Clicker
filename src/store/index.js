@@ -251,6 +251,7 @@ export default createStore({
           role: user.role,
           cookies: user.game?.cookies ?? 0,
           totalEarned: user.game?.totalEarned ?? 0,
+          rankIndex: user.game?.rank ?? 0,
           rankName: RANKS[user.game?.rank ?? 0].name,
         }))
         .sort((a, b) => b.totalEarned - a.totalEarned),

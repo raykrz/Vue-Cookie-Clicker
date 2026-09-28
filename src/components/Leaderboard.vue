@@ -1,8 +1,14 @@
 <script setup>
 import { useStore } from 'vuex'
 import { formatNumber } from '../utils/format'
+import cookieIcon from '../assets/cookie.png'
+import cookieGold from '../assets/cookie-gold.png'
+import cookieEmerald from '../assets/cookie-emerald.png'
+import cookieDiamond from '../assets/cookie-diamond.png'
+import cookieGod from '../assets/cookie-god.png'
 
 const store = useStore()
+const rankIcons = [cookieIcon, cookieGold, cookieEmerald, cookieDiamond, cookieGod]
 </script>
 
 <template>
@@ -22,7 +28,10 @@ const store = useStore()
           {{ entry.username }}
           <span v-if="entry.role === 'admin'" class="role-badge">Admin</span>
         </span>
-        <span class="rank-name">{{ entry.rankName }}</span>
+        <span class="rank-name">
+          <img :src="rankIcons[entry.rankIndex]" alt="" class="rank-icon" />
+          {{ entry.rankName }}
+        </span>
         <span class="score">{{ formatNumber(entry.totalEarned) }}</span>
       </li>
     </ul>
@@ -90,8 +99,21 @@ h2 {
 }
 
 .rank-name {
-  font-size: 0.85rem;
-  opacity: 0.85;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: var(--color-badge);
+  color: var(--color-button-text);
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem 0.2rem 0.3rem;
+}
+
+.rank-icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  object-fit: contain;
 }
 
 .score {

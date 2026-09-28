@@ -103,6 +103,18 @@ function logout() {
   store.dispatch('logout')
   view.value = 'game'
 }
+
+const showSaveToast = ref(false)
+let saveToastTimeout = null
+
+function saveGame() {
+  store.dispatch('saveGame')
+  showSaveToast.value = true
+  clearTimeout(saveToastTimeout)
+  saveToastTimeout = setTimeout(() => {
+    showSaveToast.value = false
+  }, 2000)
+}
 </script>
 
 <template>
@@ -130,7 +142,7 @@ function logout() {
             >
               <span class="material-symbols-outlined">admin_panel_settings</span>
             </button>
-            <button @click="store.dispatch('saveGame')">
+            <button @click="saveGame">
               <span class="material-symbols-outlined">save</span>
             </button>
             <button @click="logout">
@@ -144,6 +156,13 @@ function logout() {
         <AdminPanel v-else-if="view === 'admin'" />
       </template>
     </div>
+
+    <Transition name="toast">
+      <div v-if="showSaveToast" class="save-toast">
+        <span class="material-symbols-outlined">check_circle</span>
+        Game saved!
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -226,5 +245,33 @@ function logout() {
 .nav-actions button.active {
   background: var(--color-button);
   color: var(--color-button-text);
+}
+
+.save-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-button);
+  color: var(--color-button-text);
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: bold;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translate(-50%, 0.5rem);
 }
 </style>
