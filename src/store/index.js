@@ -5,9 +5,9 @@ import { loadUsers, saveUsers, loadSession, saveSession, clearSession } from '..
 export const RANKS = [
   { name: 'Baker', requiredCookies: 0, clickMultiplier: 1, costDiscount: 1 },
   { name: 'Gold', requiredCookies: 1000, clickMultiplier: 2, costDiscount: 0.9 },
-  { name: 'Emerald', requiredCookies: 20000, clickMultiplier: 4, costDiscount: 0.8 },
-  { name: 'Diamond', requiredCookies: 200000, clickMultiplier: 8, costDiscount: 0.65 },
-  { name: 'God', requiredCookies: 2000000, clickMultiplier: 16, costDiscount: 0.5 },
+  { name: 'Emerald', requiredCookies: 100000, clickMultiplier: 4, costDiscount: 0.8 },
+  { name: 'Diamond', requiredCookies: 5000000, clickMultiplier: 8, costDiscount: 0.65 },
+  { name: 'God', requiredCookies: 500000000, clickMultiplier: 16, costDiscount: 0.5 },
 ]
 
 const GORDON_PHRASES = [
@@ -28,14 +28,36 @@ function createUpgrades() {
     { id: 2, name: 'Grandma', baseCost: 50, cost: 50, production: 5, owned: 0, requiredRank: 0, maxOwned: Infinity },
     { id: 3, name: 'Farm', baseCost: 200, cost: 200, production: 20, owned: 0, requiredRank: 0, maxOwned: Infinity },
     { id: 4, name: 'Factory', baseCost: 1000, cost: 1000, production: 100, owned: 0, requiredRank: 0, maxOwned: Infinity },
-    { id: 5, name: 'Gordon Ramsay', baseCost: 5000, cost: 5000, production: 250, owned: 0, requiredRank: 1, maxOwned: 1, isGordon: true },
+    { id: 5, name: 'Mine', baseCost: 5000, cost: 5000, production: 500, owned: 0, requiredRank: 0, maxOwned: Infinity },
+    { id: 6, name: 'Bakery Truck', baseCost: 25000, cost: 25000, production: 2500, owned: 0, requiredRank: 0, maxOwned: Infinity },
+    { id: 7, name: 'Gordon Ramsay', baseCost: 5000, cost: 5000, production: 250, owned: 0, requiredRank: 1, maxOwned: 1, isGordon: true },
+    { id: 8, name: 'Gold Refinery', baseCost: 100000, cost: 100000, production: 10000, owned: 0, requiredRank: 1, maxOwned: Infinity },
+    { id: 9, name: 'Cookie Bank', baseCost: 500000, cost: 500000, production: 50000, owned: 0, requiredRank: 1, maxOwned: Infinity },
+    { id: 10, name: 'Golden Temple', baseCost: 2500000, cost: 2500000, production: 250000, owned: 0, requiredRank: 1, maxOwned: Infinity },
+    { id: 11, name: 'Emerald Quarry', baseCost: 12000000, cost: 12000000, production: 1200000, owned: 0, requiredRank: 2, maxOwned: Infinity },
+    { id: 12, name: 'Wizard Tower', baseCost: 60000000, cost: 60000000, production: 6000000, owned: 0, requiredRank: 2, maxOwned: Infinity },
+    { id: 13, name: 'Cookie Portal', baseCost: 300000000, cost: 300000000, production: 30000000, owned: 0, requiredRank: 2, maxOwned: Infinity },
+    { id: 14, name: 'Diamond Drill', baseCost: 1500000000, cost: 1500000000, production: 150000000, owned: 0, requiredRank: 3, maxOwned: Infinity },
+    { id: 15, name: 'Time Machine', baseCost: 8000000000, cost: 8000000000, production: 800000000, owned: 0, requiredRank: 3, maxOwned: Infinity },
+    { id: 16, name: 'Antimatter Condenser', baseCost: 40000000000, cost: 40000000000, production: 4000000000, owned: 0, requiredRank: 3, maxOwned: Infinity },
+    { id: 17, name: 'Cosmic Prism', baseCost: 200000000000, cost: 200000000000, production: 20000000000, owned: 0, requiredRank: 4, maxOwned: Infinity },
+    { id: 18, name: 'Reality Engine', baseCost: 1000000000000, cost: 1000000000000, production: 100000000000, owned: 0, requiredRank: 4, maxOwned: Infinity },
+    { id: 19, name: 'Infinity Cookie', baseCost: 5000000000000, cost: 5000000000000, production: 500000000000, owned: 0, requiredRank: 4, maxOwned: Infinity },
   ]
+}
+
+function mergeUpgrades(savedUpgrades = []) {
+  const savedById = new Map(savedUpgrades.map((upgrade) => [upgrade.id, upgrade]))
+  return createUpgrades().map((template) => {
+    const saved = savedById.get(template.id)
+    return saved ? { ...template, owned: saved.owned, cost: saved.cost } : template
+  })
 }
 
 function createGameState() {
   return {
-    cookies: 1000000,
-    totalEarned: 1000000,
+    cookies: 0,
+    totalEarned: 0,
     autoProduction: 0,
     rank: 0,
     upgrades: createUpgrades(),
@@ -73,7 +95,7 @@ export default createStore({
     },
     RANK_UP(state) {
       state.rank += 1
-      state.cookies = 1000000
+      state.cookies = 0
       state.autoProduction = 0
       state.upgrades.forEach((upgrade) => {
         upgrade.owned = 0
@@ -98,10 +120,7 @@ export default createStore({
       state.totalEarned = snapshot.totalEarned
       state.autoProduction = snapshot.autoProduction
       state.rank = snapshot.rank
-      state.upgrades = snapshot.upgrades.map((upgrade) => ({
-        ...upgrade,
-        maxOwned: upgrade.maxOwned === null ? Infinity : upgrade.maxOwned,
-      }))
+      state.upgrades = mergeUpgrades(snapshot.upgrades)
       state.gordonMessageVisible = false
     },
   },

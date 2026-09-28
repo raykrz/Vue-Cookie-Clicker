@@ -1,42 +1,31 @@
-# cookie-app
+![Cookie Clicker banner](banner.png)
 
-This template should help get you started developing with Vue 3 in Vite.
+# Cookie Clicker
 
-## Recommended IDE Setup
+A Vue 3 + Vuex cookie clicker. Click the cookie, buy upgrades, rank up for permanent multipliers, and climb the leaderboard.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Features
 
-## Recommended Browser Setup
+- **Clicking & upgrades** — 19 upgrades to unlock, from a Cursor to an Infinity Cookie
+- **Ranks** — Baker → Gold → Emerald → Diamond → God, each with its own theme, a click/production multiplier, and cheaper upgrades. Ranking up resets your cookies and upgrades, so plan ahead
+- **Gordon Ramsay** — unlock him at Gold rank and he'll pop by with the occasional word of encouragement
+- **Accounts** — register/log in, and your game auto-saves to your account
+- **Roles** — players and admins; admins can edit any player's score or reset their game
+- **Leaderboard** — ranked by total cookies collected
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
+## Getting started
 
 ```sh
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
 ```
-
-### Type-Check, Compile and Minify for Production
 
 ```sh
 npm run build
 ```
+
+A default admin account is seeded on first run: `admin` / `admin`.
+
+## Stack
+
+Vue 3, Vuex 4, Vite.

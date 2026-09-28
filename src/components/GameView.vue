@@ -102,7 +102,7 @@ function confirmRankUp() {
       <li v-for="upgrade in store.getters.visibleUpgrades" :key="upgrade.id" class="upgrade">
         <div class="upgrade-info">
           <span class="upgrade-name">{{ upgrade.name }}</span>
-          <span class="upgrade-detail">owned: {{ upgrade.owned }} · +{{ upgrade.production }}/s</span>
+          <span class="upgrade-detail">owned: {{ upgrade.owned }} · +{{ formatNumber(upgrade.production) }}/s</span>
         </div>
         <button
           class="buy-button"
